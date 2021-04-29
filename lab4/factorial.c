@@ -1,9 +1,13 @@
+
+/* Calculates factorial of any integer-sized number, prints measured time.
+Could be upgraded to squeeze more digits but, come on, you are not going to calculate factorial of 3e10 anytime soon.*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
 
-long long digits = 0;
+long long digits = 0; //global for holding main array length
 
 long long digits_in_factorial(int n) //count number of digits in factorial
 {
@@ -56,24 +60,11 @@ void multiply(int *arr, int number) //multiply array with a number
     free(result); //free temp array
 }
 
-void factorial(int *arr, int number) //simple recursive factorial
+void factorial(int *arr, int number) //simple factorial
 {
-    if (number == 0) //0! = 0
-    {
-        *(arr) = 0;
-        return;
-    }
-    if (number == 1) //1! = 1
-    {
-        *(arr) = 1;
-        return;
-    }
-    factorial(arr, number - 1); //recursively call factorial
-    multiply(arr, number);      //multiply current number with main array, which represents final result
-
-    /* Now this might be confusing, we multiply AFTER calling factorial because we are operating on a single array.
-    We dive deep down recurrence tree and after executing base case 1! = 1, which is assigning 1 to main array we start multiplying it
-    with next numbers as the tree is collapsing.*/
+    arr[0] = 1;
+    for (int i = 2; i <= number; i++) //loop from 1 to given number, effectively giving us factorial
+        multiply(arr, i);             //multiply current number with main array, which represents final result
 }
 
 int main()
@@ -83,6 +74,7 @@ int main()
     printf("Big factorial calculator\n");
     printf("Enter number to calculate factorial from: ");
     scanf("%d", &input_number);
+
     clock_t begin = clock(); //start clock for performance measurements
     digits = digits_in_factorial(input_number);
     printf("Digits: %I64d\n", digits);
