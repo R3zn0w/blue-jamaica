@@ -37,14 +37,14 @@ int stamp(int **arrT, int **arrP, int n, int k, int l, int posY, int posX) //pro
     for (int i = 0; i < k; i++)
         for (int j = 0; j < l; j++) //loop for every P coordinate
             if (arrP[i][j] == 1)
-                result += arrT[i + posY][j + posY]; //if P[i][j] is 1, then add offsetted value T[i+offsetY][j+offsetX] to result
+                result += arrT[i + posY][j + posX]; //if P[i][j] is 1, then add offsetted value T[i+offsetY][j+offsetX] to result
 
     return result;
 }
 
 int main()
 {
-    int n = 0, k = 0, l = 0, result = 0, temp_res = 0;
+    int n = 0, k = 0, l = 0, result = 0, temp_res = 0, resY = 0, resX = 0;
     printf("Enter n: \n");
     scanf("%d", &n);
     printf("Enter k and l: \n");
@@ -68,10 +68,30 @@ int main()
         for (int j = 0; j < n; j++)
         {
             temp_res = stamp(arrT, arrP, n, k, l, i, j);
-            result = (temp_res > result) ? temp_res : result;
+            if (temp_res > result)
+            {
+                result = temp_res;
+                resY = i;
+                resX = j;
+            }
         } //driver code for stamp function, loop for every T coordinate
 
-    printf("Biggest sum found was: %d", result);
+    printf("Biggest sum found was: %d\n", result);
+    if (result > 0) //small bonus
+    {
+        printf("Stamp location: \n");
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (i >= resY && i < resY + k && j >= resX && j < resX + l) //check if actual coordinate matches stamped result
+                    printf("\x1b[32m%d \x1b[0m", arrT[i][j]);               //just some ANSI color code, not gonna work everywhere
+                else
+                    printf("%d ", arrT[i][j]);
+            }
+            printf("\n");
+        }
+    }
     for (int i = 0; i < n; i++) //free memory T
         free(arrT[i]);
     free(arrT);
