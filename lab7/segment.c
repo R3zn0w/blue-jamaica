@@ -71,5 +71,10 @@ int main()
             result = (temp_res > result) ? temp_res : result;
         }
     printf("Largest sum is: %d", result);
+    for (int i = 0; i < n; i++) //free memory
+    {
+        free(arr[i]);
+    }
+    free(arr);
     return 0;
 }

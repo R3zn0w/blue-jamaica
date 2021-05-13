@@ -75,6 +75,11 @@ int main()
             return 0; //end program on found k-th sequence
         }
     }
-    printf("-1"); //print -1 if none found
+    printf("-1");               //print -1 if none found
+    for (int i = 0; i < n; i++) //free memory
+    {
+        free(arr[i]);
+    }
+    free(arr);
     return 0;
 }
